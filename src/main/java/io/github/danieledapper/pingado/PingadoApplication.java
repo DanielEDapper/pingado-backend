@@ -1,4 +1,4 @@
-package io.github.danieldapper.pingado;
+package io.github.danieledapper.pingado;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
