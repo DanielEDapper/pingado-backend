@@ -11,6 +11,12 @@ public class RegionRowMapper implements RowMapper<Region>
 
     @Override
     public Region mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return new Region(rs.getLong("id"), rs.getString("name"), rs.getString("state"), rs.getString("description"), rs.getInt("average_altitude"), rs.getString("sensory_profile"));
+        return new Region(
+                rs.getLong("id"),
+                rs.getString("name"),
+                rs.getString("state"),
+                rs.getString("description"),
+                rs.getInt("average_altitude"),
+                rs.getString("sensory_profile"));
     }
 }
