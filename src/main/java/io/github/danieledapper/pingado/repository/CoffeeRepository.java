@@ -2,10 +2,12 @@ package io.github.danieledapper.pingado.repository;
 
 import io.github.danieledapper.pingado.entity.Coffee;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class CoffeeRepository {
     private final JdbcTemplate jdbcTemplate;
 

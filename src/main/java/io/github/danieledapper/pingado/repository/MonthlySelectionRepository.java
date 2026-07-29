@@ -45,7 +45,7 @@ public class MonthlySelectionRepository
                        year,
                        title,
                        description
-                FROM month_selection;
+                FROM monthly_selection;
                 """;
 
         return jdbcTemplate.query(sql, new MonthlySelectionRowMapper());
@@ -59,7 +59,7 @@ public class MonthlySelectionRepository
                        year,
                        title,
                        description
-                FROM month_selection
+                FROM monthly_selection
                 WHERE id = ?;
                 """;
 
