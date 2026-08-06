@@ -10,8 +10,7 @@ public class UserRepository
 {
     private final JdbcTemplate jdbcTemplate;
 
-    public UserRepository(JdbcTemplate jdbcTemplate)
-    {
+    public UserRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -22,7 +21,7 @@ public class UserRepository
                        email,
                        password,
                        role
-                FROM user
+                FROM `user`
                 """;
 
         return jdbcTemplate.query(sql, new UserRowMapper());
@@ -40,20 +39,6 @@ public class UserRepository
                 """;
 
         return jdbcTemplate.query(sql, new UserRowMapper(), id).stream().findFirst();
-    }
-
-    public Optional<User> findByEmail(String email) {
-        String sql = """
-                SELECT id,
-                       name,
-                       email,
-                       password,
-                       role
-                FROM `user`
-                WHERE email = ?
-                """;
-
-        return jdbcTemplate.query(sql, new UserRowMapper(), email).stream().findFirst();
     }
 
     public User save(User user) {
