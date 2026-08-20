@@ -34,18 +34,14 @@ public class CoffeeController
     }
 
     @PostMapping
-    public CoffeeResponse create(@RequestBody CoffeeRequest request)
-    {
-        Coffee coffee = CoffeeMapper.toEntity(request);
-        Coffee coffeeSaved = coffeeService.create(coffee);
+    public CoffeeResponse create(@RequestBody CoffeeRequest request) {
+        Coffee coffeeSaved = coffeeService.create(request);
         return CoffeeMapper.toResponse(coffeeSaved);
     }
 
-    @PutMapping("{id}")
-    public CoffeeResponse update(@PathVariable Long id, @RequestBody CoffeeRequest request)
-    {
-        Coffee coffee = CoffeeMapper.toEntity(request);
-        Coffee coffeeSaved = coffeeService.update(id, coffee);
+    @PutMapping("/{id}")
+    public CoffeeResponse update(@PathVariable Long id, @RequestBody CoffeeRequest request) {
+        Coffee coffeeSaved = coffeeService.update(id, request);
         return CoffeeMapper.toResponse(coffeeSaved);
     }
 

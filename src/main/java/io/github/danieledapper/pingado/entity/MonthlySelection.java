@@ -1,11 +1,24 @@
 package io.github.danieledapper.pingado.entity;
 
-public class MonthlySelection
-{
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "monthly_selection")
+public class MonthlySelection {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private Integer month;
+
+    @Column(nullable = false)
     private Integer year;
+
+    @Column(nullable = false)
     private String title;
+
     private String description;
 
     public MonthlySelection(Long id, Integer month, Integer year, String title, String description) {
@@ -16,48 +29,17 @@ public class MonthlySelection
         this.description = description;
     }
 
-    public MonthlySelection()
-    {
-
+    public MonthlySelection() {
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Integer getMonth() {
-        return month;
-    }
-
-    public void setMonth(Integer month) {
-        this.month = month;
-    }
-
-    public Integer getYear() {
-        return year;
-    }
-
-    public void setYear(Integer year) {
-        this.year = year;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public Integer getMonth() { return month; }
+    public void setMonth(Integer month) { this.month = month; }
+    public Integer getYear() { return year; }
+    public void setYear(Integer year) { this.year = year; }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 }
