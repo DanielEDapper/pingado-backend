@@ -2,7 +2,6 @@ package io.github.danieledapper.pingado.service;
 
 import io.github.danieledapper.pingado.entity.MonthlySelection;
 import io.github.danieledapper.pingado.exception.MonthlySelectionNotFoundException;
-import io.github.danieledapper.pingado.repository.MonthSelectionRepository;
 import io.github.danieledapper.pingado.repository.MonthlySelectionRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +10,9 @@ import java.util.List;
 @Service
 public class MonthlySelectionService
 {
-    private final MonthSelectionRepository monthlySelectionRepository;
+    private final MonthlySelectionRepository monthlySelectionRepository;
 
-    public MonthlySelectionService(MonthSelectionRepository monthlySelectionRepository)
+    public MonthlySelectionService(MonthlySelectionRepository monthlySelectionRepository)
     {
         this.monthlySelectionRepository = monthlySelectionRepository;
     }

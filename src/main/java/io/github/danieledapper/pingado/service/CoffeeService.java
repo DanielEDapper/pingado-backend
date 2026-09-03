@@ -19,7 +19,7 @@ import java.util.List;
 public class CoffeeService {
 
     private final CoffeeRepository coffeeRepository;
-    private final RegionRepository regionRepository;
+    private final RegionRepository   regionRepository;
     private final MonthlySelectionRepository monthlySelectionRepository;
 
     public CoffeeService(CoffeeRepository coffeeRepository,
