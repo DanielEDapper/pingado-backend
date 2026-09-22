@@ -8,45 +8,71 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Regras de negócio e operações de persistência das regiões produtoras.
+ */
 @Service
-public class RegionService
-{
+public class RegionService {
+
     private final RegionRepository regionRepository;
 
-    public RegionService(RegionRepository regionRepository)
-    {
+    /**
+     * Cria o service com seu repository.
+     *
+     * @param regionRepository repository de regiões
+     */
+    public RegionService(RegionRepository regionRepository) {
         this.regionRepository = regionRepository;
     }
 
-    public List<Region> findAll()
-    {
-        return regionRepository.findAll();
+    /** @return todas as regiões cadastradas */
+    public List<Region> findAll() { return regionRepository.findAll(); }
+
+    /**
+     * Busca uma região pelo ID.
+     *
+     * @param id identificador da região
+     * @return região encontrada
+     * @throws RegionNotFoundException quando o ID não existir
+     */
+    public Region findById(Long id) {
+        return regionRepository.findById(id).orElseThrow(() -> new RegionNotFoundException(id));
     }
 
-    public Region findById(Long id)
-    {
-         return regionRepository.findById(id).orElseThrow(() -> new RegionNotFoundException(id));
-    }
+    /**
+     * Persiste uma região.
+     *
+     * @param region entidade a ser salva
+     * @return região persistida
+     */
+    public Region create(Region region) { return regionRepository.save(region); }
 
-    public Region create(Region region)
-    {
-        return regionRepository.save(region);
-    }
-
+    /**
+     * Atualiza uma região existente.
+     *
+     * @param id identificador da região
+     * @param request novos dados
+     * @return região atualizada
+     * @throws RegionNotFoundException quando o ID não existir
+     */
     public Region update(Long id, RegionRequest request) {
-        Region region = regionRepository.findById(id)
-                .orElseThrow(() -> new RegionNotFoundException(id));
-
+        Region region = findById(id);
         region.setName(request.name());
+        region.setState(request.state());
         region.setDescription(request.description());
-
+        region.setAverageAltitude(request.averageAltitude());
+        region.setSensoryProfile(request.sensoryProfile());
         return regionRepository.save(region);
     }
 
-    public void delete(Long id)
-    {
+    /**
+     * Exclui uma região existente.
+     *
+     * @param id identificador da região
+     * @throws RegionNotFoundException quando o ID não existir
+     */
+    public void delete(Long id) {
         findById(id);
         regionRepository.deleteById(id);
     }
-
 }
