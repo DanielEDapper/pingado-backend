@@ -1,8 +1,15 @@
 package io.github.danieledapper.pingado.exception;
 
-public class PaymentNotFoundException
-        extends RecourceNotFoundException {
+/**
+ * Exceção lançada quando o recurso payment não é encontrado.
+ */
+public class PaymentNotFoundException extends RecourceNotFoundException {
 
+    /**
+     * Cria a exceção para o identificador informado.
+     *
+     * @param id identificador do recurso não encontrado
+     */
     public PaymentNotFoundException(Long id) {
         super("Payment not found with id: " + id);
     }
