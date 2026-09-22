@@ -1,5 +1,6 @@
 package io.github.danieledapper.pingado.service;
 
+import io.github.danieledapper.pingado.dto.MonthSelectionRequest;
 import io.github.danieledapper.pingado.entity.MonthlySelection;
 import io.github.danieledapper.pingado.exception.MonthlySelectionNotFoundException;
 import io.github.danieledapper.pingado.repository.MonthlySelectionRepository;
@@ -32,12 +33,22 @@ public class MonthlySelectionService
         return monthlySelectionRepository.findById(id).orElseThrow(() -> new MonthlySelectionNotFoundException(id));
     }
 
-    public MonthlySelection update(Long id, MonthlySelection monthlySelection)
-    {
-        findById(id);
-        monthlySelectionRepository.update(id, monthlySelection);
-        monthlySelection.setId(id);
-        return  monthlySelection;
+    public MonthlySelection update(
+            Long id,
+            MonthSelectionRequest request
+    ) {
+        MonthlySelection selection = monthlySelectionRepository
+                .findById(id)
+                .orElseThrow(
+                        () -> new MonthlySelectionNotFoundException(id)
+                );
+
+        selection.setMonth(request.month());
+        selection.setYear(request.year());
+        selection.setTitle(request.title());
+        selection.setDescription(request.description());
+
+        return monthlySelectionRepository.save(selection);
     }
 
     public void delete(Long id)

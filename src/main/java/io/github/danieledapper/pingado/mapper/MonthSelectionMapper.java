@@ -4,11 +4,16 @@ import io.github.danieledapper.pingado.dto.MonthSelectionRequest;
 import io.github.danieledapper.pingado.dto.MonthSelectionResponse;
 import io.github.danieledapper.pingado.entity.MonthlySelection;
 
-public class MonthSelectionMapper
-{
-    public static MonthlySelection toEntity(MonthSelectionRequest request)
-    {
-        return new MonthlySelection(null,
+public class MonthSelectionMapper {
+
+    private MonthSelectionMapper() {
+    }
+
+    public static MonthlySelection toEntity(
+            MonthSelectionRequest request
+    ) {
+        return new MonthlySelection(
+                null,
                 request.month(),
                 request.year(),
                 request.title(),
@@ -16,13 +21,15 @@ public class MonthSelectionMapper
         );
     }
 
-    public static MonthSelectionResponse toResponse(MonthlySelection monthlySelection)
-    {
+    public static MonthSelectionResponse toResponse(
+            MonthlySelection selection
+    ) {
         return new MonthSelectionResponse(
-                monthlySelection.getId(),
-                monthlySelection.getMonth(),
-                monthlySelection.getYear(),
-                monthlySelection.getTitle(),
-                monthlySelection.getDescription());
+                selection.getId(),
+                selection.getMonth(),
+                selection.getYear(),
+                selection.getTitle(),
+                selection.getDescription()
+        );
     }
 }

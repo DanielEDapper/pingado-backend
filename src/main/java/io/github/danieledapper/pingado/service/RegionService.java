@@ -1,5 +1,6 @@
 package io.github.danieledapper.pingado.service;
 
+import io.github.danieledapper.pingado.dto.RegionRequest;
 import io.github.danieledapper.pingado.entity.Region;
 import io.github.danieledapper.pingado.exception.RegionNotFoundException;
 import io.github.danieledapper.pingado.repository.RegionRepository;
@@ -32,12 +33,14 @@ public class RegionService
         return regionRepository.save(region);
     }
 
-    public Region update(Long id, Region region)
-    {
-        findById(id);
-        regionRepository.update(id, region);
-        region.setId(id);
-        return region;
+    public Region update(Long id, RegionRequest request) {
+        Region region = regionRepository.findById(id)
+                .orElseThrow(() -> new RegionNotFoundException(id));
+
+        region.setName(request.name());
+        region.setDescription(request.description());
+
+        return regionRepository.save(region);
     }
 
     public void delete(Long id)

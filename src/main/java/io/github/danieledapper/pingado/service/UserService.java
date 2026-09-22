@@ -1,55 +1,72 @@
 package io.github.danieledapper.pingado.service;
 
+import io.github.danieledapper.pingado.dto.UserRequest;
 import io.github.danieledapper.pingado.entity.User;
-import io.github.danieledapper.pingado.exception.UserInformationsIncorrectException;
+import io.github.danieledapper.pingado.exception.EmailAlreadyExistsException;
+import io.github.danieledapper.pingado.exception.UserNotFoundException;
 import io.github.danieledapper.pingado.repository.UserRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
-public class UserService
-{
-    private final UserRepository userRepository;
+@Service
+public class UserService {
 
-    public UserService(UserRepository userRepository)
-    {
-        this.userRepository = userRepository;
+    private final UserRepository repository;
+
+    public UserService(UserRepository repository) {
+        this.repository = repository;
     }
 
-    public List<User> findAll()
-    {
-        return userRepository.findAll();
+    public List<User> findAll() {
+        return repository.findAll();
     }
 
-    public Optional<User> findById(Long id)
-    {
-        return userRepository.findById(id);
+    public User findById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
     }
 
-    public User save(User user)
-    {
-        String nome = user.getName();
-        String email = user.getEmail();
-        String senha = user.getPassword();
+    public User create(UserRequest request) {
+        repository.findByEmail(request.email())
+                .ifPresent(user -> {
+                    throw new EmailAlreadyExistsException(
+                            request.email()
+                    );
+                });
 
-        if(nome.isBlank() || nome.length() < 2 || email.isBlank() || senha.isBlank())
-        {
-            throw new UserInformationsIncorrectException("INFORMAÇÕES INCORRETAS NO CADASTRO DO USUÁRIO");
-        }
+        User user = new User(
+                null,
+                request.name(),
+                request.email(),
+                request.password(),
+                request.role()
+        );
 
-        return userRepository.save(user);
+        return repository.save(user);
     }
 
-    public void update(Long id, User user)
-    {
-        findById(id);
-        userRepository.update(id, user);
-        user.setId(id);
+    public User update(Long id, UserRequest request) {
+        User user = findById(id);
+
+        repository.findByEmail(request.email())
+                .filter(existing -> !existing.getId().equals(id))
+                .ifPresent(existing -> {
+                    throw new EmailAlreadyExistsException(
+                            request.email()
+                    );
+                });
+
+        user.setName(request.name());
+        user.setEmail(request.email());
+        user.setPassword(request.password());
+        user.setRole(request.role());
+
+        return repository.save(user);
     }
 
-    public void delete(Long id)
-    {
-        findById(id);
-        userRepository.deleteById(id);
+    public void delete(Long id) {
+        User user = findById(id);
+        repository.delete(user);
     }
 }

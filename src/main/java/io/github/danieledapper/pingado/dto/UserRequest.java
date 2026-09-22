@@ -1,4 +1,9 @@
 package io.github.danieledapper.pingado.dto;
 
-public class UserRequest {
+public record UserRequest(
+        String name,
+        String email,
+        String password,
+        String role
+) {
 }

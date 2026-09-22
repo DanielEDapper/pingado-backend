@@ -45,7 +45,7 @@ public class MonthlySelectionController
     public MonthSelectionResponse update(@PathVariable Long id, @RequestBody MonthSelectionRequest request)
     {
         MonthlySelection monthlySelection = MonthSelectionMapper.toEntity(request);
-        MonthlySelection savedMonthlySelection = monthlySelectionService.update(id, monthlySelection);
+        MonthlySelection savedMonthlySelection = monthlySelectionService.update(id, request);
         return MonthSelectionMapper.toResponse(savedMonthlySelection);
     }
 

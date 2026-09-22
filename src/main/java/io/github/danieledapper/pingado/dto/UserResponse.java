@@ -1,4 +1,9 @@
 package io.github.danieledapper.pingado.dto;
 
-public class UserResponse {
+public record UserResponse(
+        Long id,
+        String name,
+        String email,
+        String role
+) {
 }

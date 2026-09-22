@@ -45,7 +45,7 @@ import java.util.List;
     public RegionResponse update(@PathVariable Long id, @RequestBody RegionRequest request)
     {
         Region region = RegionMapper.toEntity(request);
-        Region updatedRegion = regionService.update(id, region);
+        Region updatedRegion = regionService.update(id, request);
         return RegionMapper.toResponse(updatedRegion);
     }
 
