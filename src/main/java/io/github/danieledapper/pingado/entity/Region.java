@@ -2,6 +2,9 @@ package io.github.danieledapper.pingado.entity;
 
 import jakarta.persistence.*;
 
+/**
+ * Entidade que representa uma região produtora de café.
+ */
 @Entity
 @Table(name = "region")
 public class Region {
@@ -24,7 +27,22 @@ public class Region {
     @Column(name = "sensory_profile")
     private String sensoryProfile;
 
-    public Region(Long id, String name, String state, String description, Integer averageAltitude, String sensoryProfile) {
+    /** Construtor vazio exigido pelo JPA. */
+    public Region() {
+    }
+
+    /**
+     * Cria uma região com todos os seus atributos.
+     *
+     * @param id identificador da região
+     * @param name nome da região
+     * @param state estado brasileiro
+     * @param description descrição da região
+     * @param averageAltitude altitude média da região
+     * @param sensoryProfile perfil sensorial associado à região
+     */
+    public Region(Long id, String name, String state, String description,
+                  Integer averageAltitude, String sensoryProfile) {
         this.id = id;
         this.name = name;
         this.state = state;
@@ -33,10 +51,6 @@ public class Region {
         this.sensoryProfile = sensoryProfile;
     }
 
-    public Region() {
-    }
-
-    // getters e setters — mantidos exatamente como já estavam
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getName() { return name; }

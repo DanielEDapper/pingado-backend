@@ -2,6 +2,9 @@ package io.github.danieledapper.pingado.entity;
 
 import jakarta.persistence.*;
 
+/**
+ * Entidade que representa a seleção de café de determinado mês e ano.
+ */
 @Entity
 @Table(name = "monthly_selection")
 public class MonthlySelection {
@@ -21,15 +24,25 @@ public class MonthlySelection {
 
     private String description;
 
+    /** Construtor vazio exigido pelo JPA. */
+    public MonthlySelection() {
+    }
+
+    /**
+     * Cria uma seleção mensal com todos os seus atributos.
+     *
+     * @param id identificador da seleção
+     * @param month número do mês
+     * @param year ano da seleção
+     * @param title título da seleção
+     * @param description descrição da seleção
+     */
     public MonthlySelection(Long id, Integer month, Integer year, String title, String description) {
         this.id = id;
         this.month = month;
         this.year = year;
         this.title = title;
         this.description = description;
-    }
-
-    public MonthlySelection() {
     }
 
     public Long getId() { return id; }
