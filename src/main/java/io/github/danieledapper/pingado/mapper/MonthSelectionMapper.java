@@ -4,32 +4,34 @@ import io.github.danieledapper.pingado.dto.MonthSelectionRequest;
 import io.github.danieledapper.pingado.dto.MonthSelectionResponse;
 import io.github.danieledapper.pingado.entity.MonthlySelection;
 
-public class MonthSelectionMapper {
+/**
+ * Conversor entre a entidade MonthlySelection e seus DTOs.
+ *
+ * <p>O nome MonthSelection é mantido para acompanhar os nomes atuais dos DTOs do projeto.</p>
+ */
+public final class MonthSelectionMapper {
 
     private MonthSelectionMapper() {
     }
 
-    public static MonthlySelection toEntity(
-            MonthSelectionRequest request
-    ) {
-        return new MonthlySelection(
-                null,
-                request.month(),
-                request.year(),
-                request.title(),
-                request.description()
-        );
+    /**
+     * Converte um request em entidade.
+     *
+     * @param request dados recebidos pela API
+     * @return entidade MonthlySelection
+     */
+    public static MonthlySelection toEntity(MonthSelectionRequest request) {
+        return new MonthlySelection(null, request.month(), request.year(), request.title(), request.description());
     }
 
-    public static MonthSelectionResponse toResponse(
-            MonthlySelection selection
-    ) {
-        return new MonthSelectionResponse(
-                selection.getId(),
-                selection.getMonth(),
-                selection.getYear(),
-                selection.getTitle(),
-                selection.getDescription()
-        );
+    /**
+     * Converte uma entidade em resposta.
+     *
+     * @param selection entidade de seleção mensal
+     * @return DTO de resposta
+     */
+    public static MonthSelectionResponse toResponse(MonthlySelection selection) {
+        return new MonthSelectionResponse(selection.getId(), selection.getMonth(), selection.getYear(),
+                selection.getTitle(), selection.getDescription());
     }
 }
