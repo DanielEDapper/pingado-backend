@@ -3,7 +3,7 @@ package io.github.danieledapper.pingado.exception;
 /**
  * Exceção lançada quando o recurso region não é encontrado.
  */
-public class RegionNotFoundException extends RecourceNotFoundException {
+public class RegionNotFoundException extends ResourceNotFoundException {
 
     /**
      * Cria a exceção para o identificador informado.

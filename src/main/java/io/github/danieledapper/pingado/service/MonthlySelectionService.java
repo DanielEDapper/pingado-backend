@@ -1,6 +1,6 @@
 package io.github.danieledapper.pingado.service;
 
-import io.github.danieledapper.pingado.dto.MonthSelectionRequest;
+import io.github.danieledapper.pingado.dto.MonthlySelectionRequest;
 import io.github.danieledapper.pingado.entity.MonthlySelection;
 import io.github.danieledapper.pingado.exception.MonthlySelectionNotFoundException;
 import io.github.danieledapper.pingado.repository.MonthlySelectionRepository;
@@ -58,7 +58,7 @@ public class MonthlySelectionService {
      * @return seleção atualizada
      * @throws MonthlySelectionNotFoundException quando o ID não existir
      */
-    public MonthlySelection update(Long id, MonthSelectionRequest request) {
+    public MonthlySelection update(Long id, MonthlySelectionRequest request) {
         MonthlySelection selection = findById(id);
         selection.setMonth(request.month());
         selection.setYear(request.year());

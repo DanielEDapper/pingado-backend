@@ -1,376 +1,416 @@
-# Guia de Desenvolvimento — Pingado
+# Development Guide — Pingado Backend
 
-## Objetivo
+## 1. Objetivo
 
-Este documento reúne os padrões de desenvolvimento adotados no projeto Pingado.
+Este documento define o padrão de desenvolvimento utilizado no backend do Pingado.
 
-Seu objetivo é manter o código organizado, padronizado e de fácil manutenção durante toda a evolução da aplicação.
-
-Todas as decisões descritas aqui poderão ser revisadas conforme o crescimento do projeto.
+O objetivo é manter consistência entre as entidades, repositories, services, DTOs, mappers, controllers, exceptions e testes.
 
 ---
 
-# Filosofia do Projeto
+## 2. Stack
 
-O Pingado foi desenvolvido como um projeto de aprendizado e portfólio.
+O projeto utiliza:
 
-Mais importante do que implementar rapidamente é implementar corretamente.
-
-Sempre priorizar:
-
-- simplicidade;
-- organização;
-- legibilidade;
-- boas práticas;
-- responsabilidade única;
-- evolução incremental.
-
-Evitar adicionar complexidade antes que ela seja realmente necessária.
+* Java
+* Spring Boot
+* Spring Data JPA
+* Hibernate
+* Banco de dados relacional
+* Maven
+* REST API
+* Spring Security para autenticação e autorização
 
 ---
 
-# Organização do Projeto
+## 3. Estrutura padrão
 
-```
-src/main/java/io/github/danieldapper/pingado
+Uma nova entidade deve seguir, quando aplicável, esta estrutura:
 
-config/
-controller/
-dto/
+```text
 entity/
-exception/
-mapper/
+    Produto.java
+
 repository/
+    ProdutoRepository.java
+
 service/
-util/
-```
+    ProdutoService.java
 
-Cada pacote possui apenas uma responsabilidade.
+dto/
+    ProdutoRequest.java
+    ProdutoResponse.java
 
----
+mapper/
+    ProdutoMapper.java
 
-# Convenções de Nomenclatura
+exception/
+    ProdutoNotFoundException.java
 
-## Classes
-
-Utilizar PascalCase.
-
-Exemplos:
-
-```
-Coffee
-CoffeeService
-CoffeeController
-CoffeeRepository
+controller/
+    ProdutoController.java
 ```
 
 ---
 
-## Métodos
+## 4. Criando uma nova Entity
 
-Utilizar camelCase.
-
-Exemplos:
-
-```
-findAll()
-
-findById()
-
-createCoffee()
-
-updateCoffee()
-
-deleteCoffee()
-```
-
----
-
-## Variáveis
-
-Utilizar camelCase.
-
-```
-coffeeName
-
-subscriptionPlan
-
-paymentDate
-```
-
----
-
-## Constantes
-
-Utilizar UPPER_CASE.
-
-```
-DEFAULT_PAGE_SIZE
-
-MAX_UPLOAD_SIZE
-```
-
----
-
-# Organização das Entidades
-
-Cada entidade deve representar apenas um conceito do domínio.
-
-Evitar colocar regras de negócio dentro das entidades.
-
-As regras ficarão preferencialmente na camada Service.
-
----
-
-# Controllers
-
-Os Controllers devem ser leves.
-
-Responsabilidades:
-
-- receber requisições;
-- validar dados básicos;
-- chamar Services;
-- retornar respostas HTTP.
-
-Evitar lógica de negócio.
-
----
-
-# Services
-
-Toda regra de negócio pertence aos Services.
-
-Exemplos:
-
-- validar assinatura;
-- cadastrar usuário;
-- consultar cafés;
-- processar pagamentos.
-
----
-
-# Repositories
-
-Responsáveis exclusivamente pelo acesso ao banco de dados.
-
-Não devem conter regras de negócio.
-
----
-
-# DTOs
-
-Sempre utilizar DTOs para comunicação com a API.
-
-Evitar retornar entidades diretamente.
+A entidade deve representar o modelo persistido.
 
 Exemplo:
 
-```
-CoffeeResponse
+```java
+@Entity
+@Table(name = "produto")
+public class Produto {
 
-CoffeeRequest
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    // atributos
+}
+```
+
+### Recomendações
+
+* Utilizar `Long` para IDs quando esse for o padrão do projeto.
+* Utilizar `BigDecimal` para valores monetários.
+* Utilizar `LocalDate` para datas sem horário.
+* Utilizar relacionamentos JPA quando houver relacionamento entre entidades.
+* Definir restrições importantes com anotações JPA.
+
+---
+
+## 5. Criando um Repository
+
+O Repository deve utilizar Spring Data JPA.
+
+Exemplo:
+
+```java
+@Repository
+public interface ProdutoRepository extends JpaRepository<Produto, Long> {
+}
+```
+
+Não criar `RowMapper`.
+
+Não utilizar `JdbcTemplate` para operações que já podem ser realizadas através do Spring Data JPA.
+
+Consultas específicas podem ser adicionadas ao Repository.
+
+Exemplo:
+
+```java
+Optional<User> findByEmail(String email);
 ```
 
 ---
 
-# Mappers
+## 6. Criando DTOs
 
-Responsáveis por converter:
+Para cada recurso, utilizar DTOs separados da Entity.
 
-DTO → Entity
+Exemplo:
 
-Entity → DTO
+```text
+ProdutoRequest
+ProdutoResponse
+```
 
-Essa separação facilita futuras alterações sem impactar a API.
+O Request representa os dados recebidos pela API.
+
+O Response representa os dados devolvidos pela API.
+
+Nunca retornar diretamente uma Entity pelo Controller.
 
 ---
 
-# Tratamento de Exceções
+## 7. Criando o Mapper
 
-Sempre utilizar exceções específicas.
+O Mapper deve centralizar as conversões:
 
-Evitar:
-
-```
-throw new Exception();
-```
-
-Preferir:
-
-```
-CoffeeNotFoundException
-
-UserAlreadyExistsException
-
-SubscriptionNotFoundException
+```text
+Request → Entity
+Entity → Response
 ```
 
----
+Padrão:
 
-# Banco de Dados
+```java
+public Produto toEntity(ProdutoRequest request) {
+    // ...
+}
 
-- utilizar nomes em inglês;
-- tabelas no singular;
-- chaves primárias chamadas "id";
-- chaves estrangeiras seguindo o padrão:
-
-```
-region_id
-
-user_id
-
-subscription_plan_id
+public ProdutoResponse toResponse(Produto produto) {
+    // ...
+}
 ```
 
 ---
 
-# API REST
+## 8. Criando a Exception
 
-Seguir os padrões REST.
+Cada recurso que pode não ser encontrado deve possuir sua própria exception:
 
-Exemplos:
+```java
+public class ProdutoNotFoundException extends RuntimeException {
 
+    public ProdutoNotFoundException(Long id) {
+        super("Produto não encontrado: " + id);
+    }
+}
 ```
-GET     /coffees
 
-GET     /coffees/{id}
+A exception deve ser tratada pelo `GlobalExceptionHandler`.
 
-POST    /coffees
+---
 
-PUT     /coffees/{id}
+## 9. Criando o Service
 
-DELETE  /coffees/{id}
+O Service concentra as regras de negócio.
+
+Estrutura típica:
+
+```java
+@Service
+@RequiredArgsConstructor
+public class ProdutoService {
+
+    private final ProdutoRepository repository;
+
+    // operações
+}
+```
+
+Para buscas por ID:
+
+---
+
+## 10. Relacionamentos
+
+Quando uma entidade possuir relacionamento com outra entidade, o Service deve garantir que as entidades relacionadas existam antes da persistência.
+
+Exemplo:
+
+```java
+Region region = regionRepository.findById(request.regionId())
+        .orElseThrow(() -> new RegionNotFoundException(request.regionId()));
+```
+
+Depois:
+
+
+
+---
+
+## 11. Criando o Controller
+
+O Controller deve delegar o processamento ao Service.
+
+Exemplo:
+
+```java
+@RestController
+@RequestMapping("/api/produtos")
+@RequiredArgsConstructor
+public class ProdutoController {
+}
+```
+
+Operações REST:
+
+```text
+GET       /api/produtos
+GET       /api/produtos/{id}
+POST      /api/produtos
+PUT       /api/produtos/{id}
+DELETE    /api/produtos/{id}
 ```
 
 ---
 
-# Git
+## 12. Tratamento de exceções
 
-Utilizar Conventional Commits.
+Não tratar exceções de negócio repetidamente dentro de cada Controller.
 
-Tipos mais comuns:
+Utilizar:
 
-```
-feat
-
-fix
-
-docs
-
-style
-
-refactor
-
-test
-
-build
-
-chore
-
-perf
-
-ci
+```java
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+}
 ```
 
-Exemplos:
+O Handler deve converter exceções em respostas HTTP padronizadas.
 
+---
+
+## 13. User e segurança
+
+A entidade `User` possui informações relacionadas à autenticação.
+
+A senha:
+
+* pode existir na Entity;
+* pode ser recebida no Request;
+* deve ser armazenada de forma segura;
+* nunca deve aparecer no `UserResponse`.
+
+O papel do usuário é representado pelo enum:
+
+```java
+public enum UserRole {
+    USER,
+    ADMIN
+}
 ```
-feat: create Coffee entity
 
-feat: implement Coffee service
+Na Entity:
 
-fix: validate null subscription
+```java
+@Enumerated(EnumType.STRING)
+@Column(nullable = false)
+private UserRole role;
+```
 
-docs: update architecture documentation
+Não utilizar Strings arbitrárias para roles.
 
-refactor: simplify CoffeeRepository
+---
 
-test: add CoffeeService tests
+## 14. Senhas
 
-build: configure Maven
+Senhas nunca devem ser armazenadas em texto puro.
 
-chore: update dependencies
+O fluxo esperado é:
+
+```text
+Senha recebida
+      ↓
+PasswordEncoder
+      ↓
+Hash
+      ↓
+Banco
+```
+
+A verificação deve ser feita pelo mecanismo de segurança.
+
+---
+
+## 15. Spring Security
+
+O Spring Security será responsável por:
+
+* autenticação;
+* identificação do usuário;
+* gerenciamento das credenciais;
+* autorização;
+* proteção dos endpoints;
+* integração com os papéis definidos no domínio.
+
+A regra de acesso não deve ser baseada em Strings espalhadas pelo código.
+
+Exemplo:
+
+
+deve corresponder ao papel definido no domínio.
+
+---
+
+## 16. Padrão para novas funcionalidades
+
+Ao implementar uma nova funcionalidade:
+
+```text
+1. Entity
+2. Repository
+3. Exception
+4. Service
+5. DTO Request
+6. DTO Response
+7. Mapper
+8. Controller
+9. Testes
+10. Documentação
+```
+
+Quando a funcionalidade envolver autenticação ou autorização:
+
+```text
+11. Security configuration
+12. Regras de autorização
+13. Testes de segurança
 ```
 
 ---
 
-# Branches
+## 17. Checklist antes do commit
 
-Enquanto o projeto estiver sendo desenvolvido por apenas um desenvolvedor, será utilizada apenas a branch:
+Antes de criar um commit:
 
-```
-main
-```
-
-Caso o projeto cresça, poderão ser adicionadas:
-
-```
-develop
-
-feature/*
-
-hotfix/*
+```text
+[ ] Código compila
+[ ] Entity revisada
+[ ] Repository revisado
+[ ] Service revisado
+[ ] DTOs revisados
+[ ] Mapper revisado
+[ ] Controller revisado
+[ ] Exceptions revisadas
+[ ] GlobalExceptionHandler revisado
+[ ] Relacionamentos revisados
+[ ] Testes executados
+[ ] Swagger revisado
+[ ] Nomes padronizados
+[ ] Documentação atualizada
 ```
 
 ---
 
-# Testes
+## 18. Padrão de commit
 
-Os testes serão implementados utilizando JUnit.
+Para implementação completa de uma entidade:
 
-Objetivos:
+```text
+feat: implement <Entidade> end-to-end
+```
 
-- validar regras de negócio;
-- evitar regressões;
-- garantir estabilidade da aplicação.
+Exemplo:
 
----
+```text
+feat: implement payment end-to-end
+```
 
-# Evolução Tecnológica
+Para correções:
 
-Versão inicial:
+```text
+fix: correct region response field
+```
 
-- Java
-- Spring Boot
-- JDBC
-- MySQL
+Para documentação:
 
-Evoluções previstas:
-
-- JPA / Hibernate
-- Spring Security
-- JWT
-- Docker
-- Deploy em nuvem
-- Swagger/OpenAPI
+```text
+docs: update architecture guide
+```
 
 ---
 
-# Princípios
+## 19. Princípio geral
 
-Durante o desenvolvimento do Pingado serão seguidos, sempre que possível, os seguintes princípios:
+Antes de adicionar uma nova implementação, verificar se ela segue os padrões já utilizados no projeto.
 
-- Clean Code
-- SOLID
-- DRY (Don't Repeat Yourself)
-- KISS (Keep It Simple, Stupid)
-- Separation of Concerns
-- Responsabilidade Única
+A prioridade é:
 
----
+```text
+Consistência
+    ↓
+Legibilidade
+    ↓
+Manutenibilidade
+    ↓
+Evolução
+```
 
-# Objetivo Final
-
-O objetivo do projeto não é apenas entregar uma aplicação funcional.
-
-O Pingado deve servir como um projeto de portfólio capaz de demonstrar conhecimentos em:
-
-- Engenharia de Software;
-- Arquitetura de Sistemas;
-- Java;
-- Spring Boot;
-- Banco de Dados;
-- APIs REST;
-- Boas Práticas de Desenvolvimento;
-- Integração entre Front-end e Back-end.
+Uma solução mais complexa não deve ser adotada apenas por ser tecnicamente possível.

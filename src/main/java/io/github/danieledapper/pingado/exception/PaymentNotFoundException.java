@@ -3,7 +3,7 @@ package io.github.danieledapper.pingado.exception;
 /**
  * Exceção lançada quando o recurso payment não é encontrado.
  */
-public class PaymentNotFoundException extends RecourceNotFoundException {
+public class PaymentNotFoundException extends ResourceNotFoundException {
 
     /**
      * Cria a exceção para o identificador informado.

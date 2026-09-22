@@ -1,5 +1,6 @@
 package io.github.danieledapper.pingado.dto;
 
+import io.github.danieledapper.pingado.enums.UserRole;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
@@ -12,6 +13,6 @@ public record UserResponse(
         @Schema(description = "ID do usuário.", example = "1") Long id,
         @Schema(description = "Nome do usuário.", example = "Daniel Dapper") String name,
         @Schema(description = "E-mail do usuário.", example = "daniel@example.com") String email,
-        @Schema(description = "Papel do usuário.", example = "USER") String role
+        @Schema(description = "Papel do usuário.", example = "USER") UserRole role
 ) {
 }

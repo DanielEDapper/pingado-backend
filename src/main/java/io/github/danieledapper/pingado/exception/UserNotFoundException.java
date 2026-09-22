@@ -3,7 +3,7 @@ package io.github.danieledapper.pingado.exception;
 /**
  * Exceção lançada quando o recurso user não é encontrado.
  */
-public class UserNotFoundException extends RecourceNotFoundException {
+public class UserNotFoundException extends ResourceNotFoundException {
 
     /**
      * Cria a exceção para o identificador informado.

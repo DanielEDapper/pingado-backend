@@ -1,7 +1,7 @@
 package io.github.danieledapper.pingado.error;
 
 import io.github.danieledapper.pingado.exception.EmailAlreadyExistsException;
-import io.github.danieledapper.pingado.exception.RecourceNotFoundException;
+import io.github.danieledapper.pingado.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,8 +21,8 @@ public class GlobalExceptionHandler {
      * @param ex exceção de recurso não encontrado
      * @return resposta HTTP 404 padronizada
      */
-    @ExceptionHandler(RecourceNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleNotFound(RecourceNotFoundException ex) {
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNotFound(ResourceNotFoundException ex) {
         ErrorResponse response = new ErrorResponse(
                 HttpStatus.NOT_FOUND.value(),
                 ex.getMessage(),

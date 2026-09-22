@@ -3,7 +3,7 @@ package io.github.danieledapper.pingado.exception;
 /**
  * Exceção lançada quando o recurso monthly selection não é encontrado.
  */
-public class MonthlySelectionNotFoundException extends RecourceNotFoundException {
+public class MonthlySelectionNotFoundException extends ResourceNotFoundException {
 
     /**
      * Cria a exceção para o identificador informado.

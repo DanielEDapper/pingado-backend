@@ -11,6 +11,6 @@ public record RegionResponse(
         @Schema(description = "Nome da região.", example = "Serra da Mantiqueira") String name,
         @Schema(description = "Estado brasileiro.", example = "MG") String state,
         @Schema(description = "Descrição da região.") String description,
-        @Schema(description = "Altitude média em metros.", example = "1200") Integer avarageAltitude,
+        @Schema(description = "Altitude média em metros.", example = "1200") Integer averageAltitude,
         @Schema(description = "Perfil sensorial associado à região.") String sensoryProfile) {
 }

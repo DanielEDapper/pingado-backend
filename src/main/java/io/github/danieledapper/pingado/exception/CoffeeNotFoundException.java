@@ -3,7 +3,7 @@ package io.github.danieledapper.pingado.exception;
 /**
  * Exceção lançada quando o recurso coffee não é encontrado.
  */
-public class CoffeeNotFoundException extends RecourceNotFoundException {
+public class CoffeeNotFoundException extends ResourceNotFoundException {
 
     /**
      * Cria a exceção para o identificador informado.

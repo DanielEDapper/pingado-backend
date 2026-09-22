@@ -3,7 +3,7 @@ package io.github.danieledapper.pingado.exception;
 /**
  * Exceção lançada quando o recurso subscription plan não é encontrado.
  */
-public class SubscriptionPlanNotFoundException extends RecourceNotFoundException {
+public class SubscriptionPlanNotFoundException extends ResourceNotFoundException {
 
     /**
      * Cria a exceção para o identificador informado.

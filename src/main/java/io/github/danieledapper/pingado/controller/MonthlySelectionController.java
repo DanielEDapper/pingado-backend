@@ -1,9 +1,9 @@
 package io.github.danieledapper.pingado.controller;
 
-import io.github.danieledapper.pingado.dto.MonthSelectionRequest;
-import io.github.danieledapper.pingado.dto.MonthSelectionResponse;
+import io.github.danieledapper.pingado.dto.MonthlySelectionRequest;
+import io.github.danieledapper.pingado.dto.MonthlySelectionResponse;
 import io.github.danieledapper.pingado.entity.MonthlySelection;
-import io.github.danieledapper.pingado.mapper.MonthSelectionMapper;
+import io.github.danieledapper.pingado.mapper.MonthlySelectionMapper;
 import io.github.danieledapper.pingado.service.MonthlySelectionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -42,8 +42,8 @@ public class MonthlySelectionController {
     @GetMapping
     @Operation(summary = "Listar todos", description = "Retorna todos os registros cadastrados.")
     @ApiResponse(responseCode = "200", description = "Registros retornados com sucesso.")
-    public List<MonthSelectionResponse> findAll() {
-        return service.findAll().stream().map(MonthSelectionMapper::toResponse).toList();
+    public List<MonthlySelectionResponse> findAll() {
+        return service.findAll().stream().map(MonthlySelectionMapper::toResponse).toList();
     }
 
     /**
@@ -58,10 +58,10 @@ public class MonthlySelectionController {
             @ApiResponse(responseCode = "200", description = "Registro encontrado."),
             @ApiResponse(responseCode = "404", description = "Registro não encontrado.")
     })
-    public MonthSelectionResponse findById(
+    public MonthlySelectionResponse findById(
             @Parameter(description = "ID do registro.", example = "1") @PathVariable Long id
     ) {
-        return MonthSelectionMapper.toResponse(service.findById(id));
+        return MonthlySelectionMapper.toResponse(service.findById(id));
     }
 
     /**
@@ -77,10 +77,10 @@ public class MonthlySelectionController {
             @ApiResponse(responseCode = "201", description = "Registro criado com sucesso."),
             @ApiResponse(responseCode = "409", description = "Conflito de regra de negócio.")
     })
-    public MonthSelectionResponse create(@RequestBody MonthSelectionRequest request) {
-        MonthlySelection selection = MonthSelectionMapper.toEntity(request);
+    public MonthlySelectionResponse create(@RequestBody MonthlySelectionRequest request) {
+        MonthlySelection selection = MonthlySelectionMapper.toEntity(request);
         MonthlySelection saved = service.create(selection);
-        return MonthSelectionMapper.toResponse(saved);
+        return MonthlySelectionMapper.toResponse(saved);
     }
 
     /**
@@ -97,11 +97,11 @@ public class MonthlySelectionController {
             @ApiResponse(responseCode = "404", description = "Registro não encontrado."),
             @ApiResponse(responseCode = "409", description = "Conflito de regra de negócio.")
     })
-    public MonthSelectionResponse update(
+    public MonthlySelectionResponse update(
             @Parameter(description = "ID do registro.", example = "1") @PathVariable Long id,
-            @RequestBody MonthSelectionRequest request
+            @RequestBody MonthlySelectionRequest request
     ) {
-        return MonthSelectionMapper.toResponse(service.update(id, request));
+        return MonthlySelectionMapper.toResponse(service.update(id, request));
     }
 
     /**
