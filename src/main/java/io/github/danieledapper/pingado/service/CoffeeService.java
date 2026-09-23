@@ -1,6 +1,7 @@
 package io.github.danieledapper.pingado.service;
 
 import io.github.danieledapper.pingado.dto.CoffeeRequest;
+import io.github.danieledapper.pingado.dto.CoffeeResponse;
 import io.github.danieledapper.pingado.entity.Coffee;
 import io.github.danieledapper.pingado.entity.MonthlySelection;
 import io.github.danieledapper.pingado.entity.Region;
@@ -52,6 +53,15 @@ public class CoffeeService {
     public Coffee findById(Long id) {
         return coffeeRepository.findById(id).orElseThrow(() -> new CoffeeNotFoundException(id));
     }
+
+    public List<CoffeeResponse> findByMonth(int month, int year) {
+        return coffeeRepository
+                .findByMonthlySelectionMonthAndMonthlySelectionYear(month, year)
+                .stream()
+                .map(CoffeeMapper::toResponse)
+                .toList();
+    }
+
 
     /**
      * Cria um café resolvendo seus relacionamentos pelos IDs recebidos.

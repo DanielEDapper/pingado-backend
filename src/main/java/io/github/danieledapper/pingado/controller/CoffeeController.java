@@ -64,6 +64,14 @@ public class CoffeeController {
         return CoffeeMapper.toResponse(service.findById(id));
     }
 
+    @GetMapping("/month/{month}/{year}")
+    public List<CoffeeResponse> findByMonth(
+            @PathVariable int month,
+            @PathVariable int year
+    ) {
+        return service.findByMonth(month, year);
+    }
+
     /**
      * Cria um novo registro.
      *
