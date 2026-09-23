@@ -64,12 +64,10 @@ public class CoffeeController {
         return CoffeeMapper.toResponse(service.findById(id));
     }
 
-    @GetMapping("/month/{month}/{year}")
+    @GetMapping("/month")
     public List<CoffeeResponse> findByMonth(
-            @PathVariable int month,
-            @PathVariable int year
     ) {
-        return service.findByMonth(month, year);
+        return service.findByMonth();
     }
 
     /**

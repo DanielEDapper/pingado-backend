@@ -14,6 +14,8 @@ import io.github.danieledapper.pingado.repository.MonthlySelectionRepository;
 import io.github.danieledapper.pingado.repository.RegionRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -54,9 +56,9 @@ public class CoffeeService {
         return coffeeRepository.findById(id).orElseThrow(() -> new CoffeeNotFoundException(id));
     }
 
-    public List<CoffeeResponse> findByMonth(int month, int year) {
+    public List<CoffeeResponse> findByMonth() {
         return coffeeRepository
-                .findByMonthlySelectionMonthAndMonthlySelectionYear(month, year)
+                .findByMonthlySelectionMonthAndMonthlySelectionYear(LocalDate.now().getMonthValue(), LocalDate.now().getYear())
                 .stream()
                 .map(CoffeeMapper::toResponse)
                 .toList();
