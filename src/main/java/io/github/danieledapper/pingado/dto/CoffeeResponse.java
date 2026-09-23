@@ -12,6 +12,6 @@ public record CoffeeResponse(
         @Schema(description = "Descrição do café.") String description,
         @Schema(description = "Notas sensoriais.") String sensoryNotes,
         @Schema(description = "URL ou referência da imagem.") String image,
-        @Schema(description = "ID da região produtora.", example = "1") Long regionId,
+        @Schema(description = "Nome da região produtora.", example = "1") String region,
         @Schema(description = "ID da seleção mensal.", example = "1", nullable = true) Long monthlySelectionId) {
 }

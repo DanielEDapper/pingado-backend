@@ -27,7 +27,7 @@ public final class CoffeeMapper {
         return new CoffeeResponse(
                 coffee.getId(), coffee.getName(), coffee.getDescription(),
                 coffee.getSensoryNotes(), coffee.getImage(),
-                coffee.getRegion().getId(), monthlySelectionId
+                coffee.getRegion().getName(), monthlySelectionId
         );
     }
 
