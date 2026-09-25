@@ -30,6 +30,8 @@ public class AuthController {
             @RequestBody LoginRequest request
     ) {
 
+        System.out.println(">>> LOGIN RECEBIDO: " + request.email());
+
         Authentication authentication =
                 authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(
@@ -38,11 +40,15 @@ public class AuthController {
                         )
                 );
 
+        System.out.println(">>> AUTENTICAÇÃO OK");
+
         String token =
                 jwtService.generateToken(
                         (org.springframework.security.core.userdetails.UserDetails)
                                 authentication.getPrincipal()
                 );
+
+        System.out.println(">>> JWT GERADO");
 
         return ResponseEntity.ok(
                 new LoginResponse(token)
