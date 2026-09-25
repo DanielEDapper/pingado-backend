@@ -5,6 +5,7 @@ import io.github.danieledapper.pingado.entity.User;
 import io.github.danieledapper.pingado.exception.EmailAlreadyExistsException;
 import io.github.danieledapper.pingado.exception.UserNotFoundException;
 import io.github.danieledapper.pingado.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,14 +17,16 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * Cria o service com seu repository.
      *
      * @param repository repository de usuários
      */
-    public UserService(UserRepository repository) {
+    public UserService(UserRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /** @return todos os usuários cadastrados */
@@ -48,10 +51,23 @@ public class UserService {
      * @throws EmailAlreadyExistsException quando o e-mail já estiver cadastrado
      */
     public User create(UserRequest request) {
+
         repository.findByEmail(request.email()).ifPresent(user -> {
             throw new EmailAlreadyExistsException(request.email());
         });
-        return repository.save(new User(null, request.name(), request.email(), request.password(), request.role()));
+
+        String encodedPassword =
+                passwordEncoder.encode(request.password());
+
+        return repository.save(
+                new User(
+                        null,
+                        request.name(),
+                        request.email(),
+                        encodedPassword,
+                        request.role()
+                )
+        );
     }
 
     /**
